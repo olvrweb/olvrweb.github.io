@@ -1,12 +1,10 @@
-// ✏️ EDIT THIS FILE — copy/paste a block to add more projects
-
 const projects = [
   {
-    name: "Weather App",
-    description: "A minimal weather dashboard pulling live data from OpenWeatherMap. Built to practice async JS and API integration.",
-    tags: ["JavaScript", "API", "CSS"],
-    github: "https://github.com/olvrleb/weather-app",
-    live: "",
+    name: "Unblocked Games",
+    description: "A custom unblocked games site I built and host across three platforms. Pick a mirror and play.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    github: "https://github.com/olvrleb/olvrleb.github.io",
+    live: "links.html",
   },
   {
     name: "Link Shortener",
