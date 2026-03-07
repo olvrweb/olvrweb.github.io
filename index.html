@@ -10,6 +10,7 @@
 </head>
 <body>
 
+  <div class="progress-bar" id="progress-bar"></div>
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
   <div class="page-loader" id="loader"></div>
@@ -22,8 +23,9 @@
   </nav>
 
   <section class="hero">
-    <div class="hero-glow"></div>
-    <div class="hero-content">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="hero-content" id="hero-content">
       <div class="hero-tag"><i data-lucide="terminal"></i> developer</div>
       <h1 class="hero-handle">
         <span class="bracket left-b">[</span><span id="handle">olvrleb</span><span class="bracket right-b">]</span>
@@ -36,10 +38,13 @@
         <span class="sep">/</span>
         <span id="meta-count"></span>
       </div>
+      <a href="#projects" class="browse-btn">
+        browse <i data-lucide="chevron-down"></i>
+      </a>
     </div>
   </section>
 
-  <main>
+  <main id="projects">
     <div class="section-label">
       <span class="label-text"><i data-lucide="layers"></i>selected work</span>
       <div class="label-rule"></div>
