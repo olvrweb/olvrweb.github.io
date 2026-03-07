@@ -91,11 +91,17 @@ function renderProjects() {
     return;
   }
   projects.forEach((p, idx) => {
-    const tags  = p.tags.map(t => `<span class="tag">${t}</span>`).join('');
-    const links = [
-      p.github ? `<a href="${p.github}" target="_blank" class="card-link" title="GitHub"><i data-lucide="github"></i></a>` : '',
-      p.live   ? `<a href="${p.live}"   target="_blank" class="card-link" title="Live"><i data-lucide="arrow-up-right"></i></a>` : '',
-    ].join('');
+    const tags = p.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+    // github icon always shows if there's a repo
+    const ghLink = p.github
+      ? `<a href="${p.github}" target="_blank" class="card-link" title="GitHub"><i data-lucide="github"></i></a>`
+      : '';
+
+    // arrow always shows — links to live if available, otherwise falls back to github
+    const arrowHref  = p.live || p.github || '#';
+    const arrowTitle = p.live ? 'Live Demo' : 'GitHub';
+    const arrowLink  = `<a href="${arrowHref}" target="_blank" class="card-link" title="${arrowTitle}"><i data-lucide="arrow-up-right"></i></a>`;
 
     const card = document.createElement('article');
     card.className = 'project-card';
@@ -103,7 +109,7 @@ function renderProjects() {
     card.innerHTML = `
       <div class="card-top">
         <div class="card-icon"><i data-lucide="folder"></i></div>
-        <div class="card-actions">${links}</div>
+        <div class="card-actions">${ghLink}${arrowLink}</div>
       </div>
       <h3 class="card-title">${p.name}</h3>
       <p class="card-desc">${p.description}</p>
