@@ -63,7 +63,7 @@
     .page {
       position: relative; z-index: 1;
       display: flex; flex-direction: column; align-items: center;
-      padding: 2.5rem 1.5rem;
+      padding: 2.5rem 1.5rem 4rem;
       width: 100%; max-width: 480px;
       animation: fadeUp .6s .1s ease both;
     }
@@ -162,9 +162,65 @@
     }
     .link-arrow svg { width: 18px; height: 18px; display: block; }
 
+    /* DIVIDER */
+    .divider {
+      display: flex; align-items: center; gap: 1rem;
+      width: 100%; margin: 2.25rem 0 1.75rem;
+      animation: fadeUp .5s .55s ease both;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+    .divider-text {
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    /* INSTRUCTIONS */
+    .instructions {
+      width: 100%;
+      display: flex; flex-direction: column; gap: .75rem;
+      animation: fadeUp .5s .6s ease both;
+    }
+
+    .step {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 1rem 1.2rem;
+    }
+
+    .step-num {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--blue-light); border: 1px solid var(--blue-mid);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: .72rem; font-weight: 700; color: var(--blue-dark);
+    }
+
+    .step-body { display: flex; flex-direction: column; gap: .2rem; padding-top: .15rem; }
+
+    .step-title {
+      font-size: .88rem; font-weight: 600; color: var(--text);
+      letter-spacing: -.01em;
+    }
+
+    .step-desc {
+      font-size: .8rem; font-weight: 300; color: var(--muted); line-height: 1.55;
+    }
+
+    .step-desc code {
+      font-family: "Geist Sans", monospace;
+      font-weight: 600; color: var(--blue);
+      background: var(--blue-light);
+      border: 1px solid var(--blue-mid);
+      padding: .05rem .35rem; border-radius: 5px;
+      font-size: .8rem;
+    }
+
     .note {
       font-size: .75rem; font-weight: 300; color: var(--faint);
       text-align: center; margin-top: 1.75rem; line-height: 1.6;
+      animation: fadeUp .5s .7s ease both;
     }
   </style>
 </head>
@@ -217,10 +273,51 @@
 
     </div>
 
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">how to access</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="instructions">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <span class="step-title">Open any link above</span>
+          <span class="step-desc">Pick whichever mirror loads fastest for you.</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <span class="step-title">Scroll down</span>
+          <span class="step-desc">Once you're on the site, scroll past the top section.</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <span class="step-title">Click System Access</span>
+          <span class="step-desc">Find the <strong>System Access</strong> button and click it.</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <span class="step-title">Type the password</span>
+          <span class="step-desc">When prompted, type <code>project</code> and hit enter.</span>
+        </div>
+      </div>
+
+    </div>
+
     <p class="note">If one link is down, try another — they all go to the same place.</p>
   </div>
 
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
 </body>
 </html>
