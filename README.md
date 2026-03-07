@@ -1,44 +1,30 @@
-# Oliver LeBlanc — Portfolio
+# olvrleb — portfolio
 
-A clean, minimal portfolio page to showcase all my projects.
+Personal portfolio site. Hand-coded with vanilla HTML, CSS, and JavaScript.
+No frameworks. No build tools. No nonsense.
+
+Live at: **[olvrleb.github.io/portfolio](https://olvrleb.github.io/portfolio)**
 
 ---
 
-## How to Add or Edit Projects
+## Stack
 
-Open **`projects.js`** — that's the only file you need to touch.
+- HTML, CSS, JavaScript — nothing else
+- [Geist Sans](https://vercel.com/font) — typography
+- [Lucide Icons](https://lucide.dev) — icons
+- GitHub Pages — hosting
 
-Each project looks like this:
+---
+
+## Adding a Project
+
+Open `projects.js` and copy this block into the array:
 
 ```js
 {
-  name: "My Project",
-  description: "What it does and why it's cool.",
-  tags: ["JavaScript", "CSS"],
-  github: "https://github.com/yourusername/my-project",
-  live: "https://my-project.com",   // leave as "" if no live link
+  name: "Your Project",
+  description: "What it does and why you built it.",
+  tags: ["Tag1", "Tag2"],
+  github: "https://github.com/olvrleb/your-project",
+  live: "",  // add a URL if there's a live demo
 },
-```
-
-Copy that block, fill it in, and save. That's it.
-
----
-
-## Repo Structure
-
-```
-portfolio/
-├── index.html       ← page structure (rarely needs editing)
-├── style.css        ← all visual styles
-├── projects.js      ← ✏️  YOUR projects live here — edit this
-├── main.js          ← renders the cards automatically
-└── README.md        ← you are here
-```
-
----
-
-## Deployment
-
-Push to GitHub, then enable **GitHub Pages** under  
-`Settings → Pages → Source: main / root`  
-Your site will be live at `https://yourusername.github.io/portfolio`.
