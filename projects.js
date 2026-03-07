@@ -1,17 +1,17 @@
 const projects = [
   {
-    name: "Unblocked Games",
-    description: "A custom unblocked games site I built and host across three platforms. Pick a mirror and play.",
+    name: "Game Site",
+    description: "A site I built and host across three platforms. Pick a mirror and play.",
     tags: ["HTML", "CSS", "JavaScript"],
     github: "https://github.com/olvrleb/olvrleb.github.io",
     live: "links.html",
   },
   {
-    name: "Link Shortener",
-    description: "A URL shortener with a clean interface. Generates short codes on the fly and stores links in localStorage.",
-    tags: ["HTML", "JavaScript"],
-    github: "https://github.com/olvrleb/link-shortener",
-    live: "",
+    name: "Tab Cloaker",
+    description: "Open any URL inside an about:blank tab. The address bar shows nothing — looks like an empty page.",
+    tags: ["JavaScript", "HTML"],
+    github: "https://github.com/olvrleb/tab-cloaker",
+    live: "cloaker.html",
   },
   {
     name: "Markdown Editor",
