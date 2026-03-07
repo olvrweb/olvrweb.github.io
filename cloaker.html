@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>olvrleb — cloaker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:       #2563EB;
+      --blue-glow:  rgba(37,99,235,.18);
+      --blue-light: #EFF6FF;
+      --blue-mid:   #BFDBFE;
+      --blue-dark:  #1D4ED8;
+      --bg:         #FAFAFA;
+      --card:       #FFFFFF;
+      --text:       #0D1117;
+      --muted:      #6B7280;
+      --faint:      #9CA3AF;
+      --border:     #E5E7EB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Geist Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,.055) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .blob { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(70px); z-index: 0; }
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(37,99,235,.09) 0%, transparent 70%);
+      top: -150px; left: -150px;
+      animation: blob1 9s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(99,102,241,.08) 0%, transparent 70%);
+      bottom: -80px; right: -80px;
+      animation: blob2 11s ease-in-out infinite alternate;
+    }
+    @keyframes blob1 { from { transform: scale(1); } to { transform: translate(60px,50px) scale(1.1); } }
+    @keyframes blob2 { from { transform: scale(1); } to { transform: translate(-50px,-40px) scale(1.12); } }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .page {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2.5rem 1.5rem 4rem;
+      width: 100%; max-width: 460px;
+      animation: fadeUp .6s .1s ease both;
+    }
+
+    .back {
+      align-self: flex-start;
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-size: .8rem; font-weight: 500; color: var(--faint);
+      text-decoration: none; margin-bottom: 2.5rem;
+      transition: color .15s;
+    }
+    .back:hover { color: var(--blue); }
+    .back::before { content: '←'; font-size: .85rem; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--blue); background: var(--blue-light);
+      border: 1px solid var(--blue-mid);
+      padding: .2rem .65rem; border-radius: 999px;
+      margin-bottom: 1.1rem;
+    }
+
+    h1 {
+      font-size: 2.4rem; font-weight: 700;
+      letter-spacing: -.04em; line-height: 1.1;
+      text-align: center; margin-bottom: .6rem;
+    }
+    h1 span { color: var(--blue); }
+
+    .sub {
+      font-size: .9rem; font-weight: 300; color: var(--muted);
+      text-align: center; line-height: 1.6; margin-bottom: 2.25rem;
+    }
+
+    /* INPUT ROW */
+    .input-row {
+      display: flex; gap: .6rem; width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .url-input {
+      flex: 1;
+      font-family: "Geist Sans", sans-serif;
+      font-size: .9rem; font-weight: 400;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: .75rem 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .url-input::placeholder { color: var(--faint); }
+    .url-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+    }
+
+    .launch-btn {
+      font-family: "Geist Sans", sans-serif;
+      font-size: .88rem; font-weight: 600;
+      color: #fff; background: var(--blue);
+      border: none; border-radius: 10px;
+      padding: .75rem 1.3rem;
+      cursor: none;
+      white-space: nowrap;
+      transition: background .15s, box-shadow .2s, transform .15s;
+    }
+    .launch-btn:hover {
+      background: var(--blue-dark);
+      box-shadow: 0 4px 18px var(--blue-glow);
+      transform: translateY(-1px);
+    }
+    .launch-btn:active { transform: scale(.97); }
+
+    /* RECENT */
+    .recent-label {
+      align-self: flex-start;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--faint); margin-bottom: .6rem; margin-top: .5rem;
+    }
+
+    .recent-list {
+      display: flex; flex-direction: column; gap: .45rem; width: 100%;
+    }
+
+    .recent-item {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--card); border: 1px solid var(--border); border-radius: 9px;
+      padding: .6rem 1rem;
+      cursor: none;
+      transition: border-color .15s, background .15s;
+      animation: fadeUp .4s ease both;
+    }
+    .recent-item:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+
+    .recent-url {
+      font-size: .82rem; font-weight: 400; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 320px;
+    }
+
+    .recent-go {
+      font-size: .75rem; font-weight: 500; color: var(--faint);
+      transition: color .15s;
+    }
+    .recent-item:hover .recent-go { color: var(--blue); }
+
+    .empty-recent {
+      font-size: .82rem; font-weight: 300; color: var(--faint);
+      text-align: center; padding: 1rem 0;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex; align-items: center; gap: 1rem;
+      width: 100%; margin: 1.75rem 0 1.25rem;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+    .divider-text {
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--faint);
+    }
+
+    /* HOW IT WORKS */
+    .how {
+      width: 100%;
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.1rem 1.25rem;
+      display: flex; flex-direction: column; gap: .55rem;
+    }
+    .how-title {
+      font-size: .82rem; font-weight: 600; color: var(--text);
+    }
+    .how-desc {
+      font-size: .8rem; font-weight: 300; color: var(--muted); line-height: 1.6;
+    }
+
+    .note {
+      font-size: .72rem; font-weight: 300; color: var(--faint);
+      text-align: center; margin-top: 1.5rem; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="page">
+    <a href="index.html" class="back"> back to portfolio</a>
+
+    <div class="eyebrow">tab cloaker</div>
+    <h1>open in <span>about:blank.</span></h1>
+    <p class="sub">Paste any URL. It'll open in a blank tab so it looks like nothing.</p>
+
+    <div class="input-row">
+      <input
+        type="text"
+        class="url-input"
+        id="url-input"
+        placeholder="e.g. google.com"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+      />
+      <button class="launch-btn" onclick="launch()">open</button>
+    </div>
+
+    <span class="recent-label">recent</span>
+    <div class="recent-list" id="recent-list"></div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">how it works</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="how">
+      <span class="how-title">What does this do?</span>
+      <span class="how-desc">
+        When you open a link through this tool, it loads inside a blank tab
+        (<code style="font-family:inherit;color:var(--blue);background:var(--blue-light);border:1px solid var(--blue-mid);padding:.05rem .3rem;border-radius:4px;font-size:.78rem;">about:blank</code>).
+        The tab title and URL bar won't show the real site — it just looks like an empty tab.
+      </span>
+    </div>
+
+    <p class="note">Tip: press Enter in the input field to launch.</p>
+  </div>
+
+  <script>
+    const input = document.getElementById('url-input');
+
+    // launch on enter key
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') launch(); });
+
+    function launch() {
+      let url = input.value.trim();
+      if (!url) return;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+
+      // save to recent
+      saveRecent(url);
+      renderRecent();
+
+      // open cloaked
+      const win = window.open();
+      win.document.write(
+        `<!DOCTYPE html><html><head><title></title>
+        <style>*{margin:0;padding:0;box-sizing:border-box;}
+        iframe{position:fixed;top:0;left:0;width:100%;height:100%;border:none;}</style>
+        </head><body><iframe src="${url}"></iframe></body></html>`
+      );
+      win.document.close();
+
+      input.value = '';
+    }
+
+    // RECENT — stored in localStorage
+    function getRecent() {
+      try { return JSON.parse(localStorage.getItem('cloaker-recent') || '[]'); }
+      catch { return []; }
+    }
+
+    function saveRecent(url) {
+      let list = getRecent().filter(u => u !== url);
+      list.unshift(url);
+      list = list.slice(0, 5); // keep last 5
+      localStorage.setItem('cloaker-recent', JSON.stringify(list));
+    }
+
+    function renderRecent() {
+      const container = document.getElementById('recent-list');
+      const list = getRecent();
+      if (!list.length) {
+        container.innerHTML = '<p class="empty-recent">Nothing yet — launch something first.</p>';
+        return;
+      }
+      container.innerHTML = list.map((url, i) => `
+        <div class="recent-item" onclick="openRecent('${url}')" style="animation-delay:${i * 60}ms">
+          <span class="recent-url">${url.replace('https://','').replace('http://','')}</span>
+          <span class="recent-go">open →</span>
+        </div>
+      `).join('');
+    }
+
+    function openRecent(url) {
+      const win = window.open();
+      win.document.write(
+        `<!DOCTYPE html><html><head><title></title>
+        <style>*{margin:0;padding:0;box-sizing:border-box;}
+        iframe{position:fixed;top:0;left:0;width:100%;height:100%;border:none;}</style>
+        </head><body><iframe src="${url}"></iframe></body></html>`
+      );
+      win.document.close();
+    }
+
+    renderRecent();
+  </script>
+</body>
+</html>
