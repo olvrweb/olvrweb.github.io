@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>olvrleb — cloaker</title>
@@ -210,6 +210,7 @@
       text-align: center; margin-top: 1.5rem; line-height: 1.6;
     }
   </style>
+  <script src="shared.js"></script>
 </head>
 <body>
 
@@ -316,10 +317,10 @@
     function openRecent(url) {
       const win = window.open();
       win.document.write(
-        `<!DOCTYPE html><html><head><title></title>
+        `<!DOCTYPE html><html><><title></title>
         <style>*{margin:0;padding:0;box-sizing:border-box;}
         iframe{position:fixed;top:0;left:0;width:100%;height:100%;border:none;}</style>
-        </head><body><iframe src="${url}"></iframe></body></html>`
+        </><body><iframe src="${url}"></iframe></body></html>`
       );
       win.document.close();
     }
