@@ -1,36 +1,47 @@
-// =============================================================
-//  projects.js — EDIT THIS FILE TO MANAGE YOUR PROJECTS
-//  Each project is an object inside the array below.
-//
-//  Fields:
-//    name        — Project title  (required)
-//    description — Short summary  (required)
-//    tags        — Tech/language tags as a list (required)
-//    github      — GitHub repo URL  (leave as "" if none)
-//    live        — Live demo URL    (leave as "" if none)
-// =============================================================
+// ✏️ EDIT THIS FILE — copy/paste a block to add more projects
 
 const projects = [
   {
-    name: "Project One",
-    description: "Describe what this project does, what problem it solves, and anything cool about it.",
+    name: "Weather App",
+    description: "A minimal weather dashboard pulling live data from OpenWeatherMap. Built to practice async JS and API integration.",
+    tags: ["JavaScript", "API", "CSS"],
+    github: "https://github.com/yourusername/weather-app",
+    live: "https://weather.olvrleb.dev",
+  },
+  {
+    name: "Link Shortener",
+    description: "A URL shortener with a clean interface. Generates short codes on the fly and stores links in localStorage.",
+    tags: ["HTML", "JavaScript"],
+    github: "https://github.com/yourusername/link-shortener",
+    live: "",
+  },
+  {
+    name: "Markdown Editor",
+    description: "Live markdown preview editor. Type on the left, see rendered output on the right. Zero dependencies.",
     tags: ["JavaScript", "HTML", "CSS"],
-    github: "https://github.com/yourusername/project-one",
-    live: "https://yourproject.com",
-  },
-  {
-    name: "Project Two",
-    description: "Another short description. You can mention the tools or concepts you explored.",
-    tags: ["Python", "API"],
-    github: "https://github.com/yourusername/project-two",
+    github: "https://github.com/yourusername/md-editor",
     live: "",
   },
   {
-    name: "Project Three",
-    description: "Keep descriptions concise — two to three sentences is the sweet spot.",
-    tags: ["Lua", "Game Dev"],
-    github: "https://github.com/yourusername/project-three",
+    name: "Todo CLI",
+    description: "A command-line todo manager in Python. Supports priorities, deadlines, and JSON-based persistence.",
+    tags: ["Python", "CLI"],
+    github: "https://github.com/yourusername/todo-cli",
     live: "",
   },
-  // ── Add more projects by copying the block above ──
+  {
+    name: "Portfolio",
+    description: "This site. Hand-coded with vanilla HTML, CSS, and JS. No frameworks, no build tools, no nonsense.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    github: "https://github.com/yourusername/portfolio",
+    live: "",
+  },
+  {
+    name: "Pixel Art Tool",
+    description: "A browser-based pixel art editor using HTML Canvas. Draw, fill, and export your creations as PNG.",
+    tags: ["JavaScript", "Canvas"],
+    github: "https://github.com/yourusername/pixel-art",
+    live: "https://pixel.olvrleb.dev",
+  },
+  // copy a block above to add more ↑
 ];
