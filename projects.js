@@ -14,11 +14,11 @@ const projects = [
     live: "cloaker.html",
   },
   {
-    name: "Markdown Editor",
-    description: "Live markdown preview editor. Type on the left, see rendered output on the right. Zero dependencies.",
-    tags: ["JavaScript", "HTML", "CSS"],
-    github: "https://github.com/olvrleb/md-editor",
-    live: "",
+  name: "Vibe Checker",
+  description: "Paste any code and find out how AI-generated it is. Scans for 15+ signals like CSS variables, cubic-bezier, ARIA attributes, and more.",
+  tags: ["JavaScript", "HTML", "CSS"],
+  github: "https://github.com/olvrleb/vibe-checker",
+  live: "checker.html",
   },
   {
     name: "Todo CLI",
