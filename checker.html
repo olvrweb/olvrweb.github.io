@@ -1,70 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>olvrleb — vibe checker</title>
-  <title>olvrleb | vibe checker</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" />
   <script src="shared.js"></script>
   <style>
-@@ -82,8 +82,7 @@
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:         #2563EB;
+      --blue-glow:    rgba(37,99,235,.18);
+      --blue-light:   #EFF6FF;
+      --blue-mid:     #BFDBFE;
+      --blue-dark:    #1D4ED8;
+      --bg:           #FAFAFA;
+      --card:         #FFFFFF;
+      --text:         #0D1117;
+      --muted:        #6B7280;
+      --faint:        #9CA3AF;
+      --border:       #E5E7EB;
+      --green:        #16A34A;
+      --green-light:  #DCFCE7;
+      --green-mid:    #BBF7D0;
+      --yellow:       #D97706;
+      --yellow-light: #FEF9C3;
+      --yellow-mid:   #FDE68A;
+      --red:          #DC2626;
+      --red-light:    #FEE2E2;
+      --red-mid:      #FECACA;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Geist Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,.055) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .blob { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(70px); z-index: 0; }
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(37,99,235,.08) 0%, transparent 70%);
+      top: -150px; left: -200px;
+      animation: blob1 9s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(99,102,241,.07) 0%, transparent 70%);
+      bottom: 0; right: -100px;
+      animation: blob2 12s ease-in-out infinite alternate;
+    }
+    @keyframes blob1 { from { transform: scale(1); } to { transform: translate(60px,50px) scale(1.1); } }
+    @keyframes blob2 { from { transform: scale(1); } to { transform: translate(-50px,-40px) scale(1.12); } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .page {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2.5rem 1.5rem 5rem;
+      width: 100%; max-width: 580px;
+      animation: fadeUp .6s .1s ease both;
+    }
+
+    .back {
       align-self: flex-start;
       display: inline-flex; align-items: center; gap: .35rem;
       font-size: .8rem; font-weight: 500; color: var(--faint);
-      text-decoration: none; margin-bottom: 2.5rem;
-      transition: color .15s;
       text-decoration: none; margin-bottom: 2.5rem; transition: color .15s;
     }
     .back:hover { color: var(--blue); }
     .back::before { content: '←'; font-size: .85rem; }
-@@ -109,7 +108,6 @@
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--blue); background: var(--blue-light);
+      border: 1px solid var(--blue-mid);
+      padding: .2rem .65rem; border-radius: 999px; margin-bottom: 1.1rem;
+    }
+
+    h1 {
+      font-size: 2.4rem; font-weight: 700;
+      letter-spacing: -.04em; line-height: 1.1;
+      text-align: center; margin-bottom: .6rem;
+    }
+    h1 span { color: var(--blue); }
+
+    .sub {
+      font-size: .9rem; font-weight: 300; color: var(--muted);
       text-align: center; line-height: 1.6; margin-bottom: 2rem;
     }
 
-    /* TABS */
     .tabs {
       display: flex; gap: .4rem; width: 100%;
       background: var(--card); border: 1px solid var(--border);
-@@ -118,48 +116,39 @@
+      border-radius: 10px; padding: .3rem; margin-bottom: 1rem;
+    }
     .tab {
       flex: 1; font-family: inherit; font-size: .82rem; font-weight: 500;
       color: var(--faint); background: transparent;
-      border: none; border-radius: 7px; padding: .5rem 1rem;
-      cursor: pointer; transition: color .15s, background .15s;
       border: none; border-radius: 7px; padding: .5rem 1rem; cursor: pointer;
       transition: color .15s, background .15s;
     }
     .tab.active { color: var(--text); background: var(--bg); box-shadow: 0 1px 4px rgba(0,0,0,.06); }
 
-    /* URL INPUT */
-    .input-row {
-      display: flex; gap: .6rem; width: 100%; margin-bottom: .75rem;
-    }
     .input-row { display: flex; gap: .6rem; width: 100%; margin-bottom: .75rem; }
     .url-input {
-      flex: 1;
-      font-family: "Geist Sans", sans-serif;
       flex: 1; font-family: "Geist Sans", sans-serif;
       font-size: .9rem; font-weight: 400; color: var(--text);
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: .75rem 1rem;
-      outline: none; transition: border-color .2s, box-shadow .2s;
       border-radius: 10px; padding: .75rem 1rem; outline: none;
       transition: border-color .2s, box-shadow .2s;
     }
     .url-input::placeholder { color: var(--faint); }
     .url-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
 
-    /* PASTE INPUT */
     .paste-box {
-      width: 100%;
-      font-family: "Geist Sans", monospace;
       width: 100%; font-family: "Geist Sans", monospace;
       font-size: .82rem; font-weight: 400; color: var(--text);
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1rem;
-      resize: vertical; min-height: 160px;
-      outline: none; line-height: 1.6;
-      transition: border-color .2s, box-shadow .2s;
       border-radius: 12px; padding: 1rem; resize: vertical; min-height: 160px;
       outline: none; line-height: 1.6; transition: border-color .2s, box-shadow .2s;
       margin-bottom: .75rem;
@@ -72,42 +143,40 @@
     .paste-box::placeholder { color: var(--faint); }
     .paste-box:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
 
-    /* BUTTONS */
     .btn-row { display: flex; gap: .6rem; width: 100%; margin-bottom: 2rem; }
 
     .analyze-btn {
       flex: 1; font-family: inherit; font-size: .9rem; font-weight: 600;
-      color: #fff; background: var(--blue);
-      border: none; border-radius: 10px; padding: .8rem 1.5rem; cursor: pointer;
       color: #fff; background: var(--blue); border: none; border-radius: 10px;
       padding: .8rem 1.5rem; cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: .5rem;
       transition: background .15s, box-shadow .2s, transform .15s;
     }
-@@ -176,32 +165,25 @@
+    .analyze-btn:hover { background: var(--blue-dark); box-shadow: 0 4px 18px var(--blue-glow); transform: translateY(-1px); }
+    .analyze-btn:active { transform: scale(.97); }
+    .analyze-btn:disabled { opacity: .6; pointer-events: none; }
+
+    .clear-btn {
+      font-family: inherit; font-size: .9rem; font-weight: 500;
+      color: var(--muted); background: var(--card);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: .8rem 1.25rem; cursor: pointer;
+      transition: color .15s, border-color .15s;
     }
     .clear-btn:hover { color: var(--text); border-color: var(--muted); }
 
-    /* SPINNER */
     .spinner {
       width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      display: none;
       border: 2px solid rgba(255,255,255,.3); border-top-color: #fff;
       border-radius: 50%; animation: spin .7s linear infinite; display: none;
     }
 
-    /* STATUS */
     .status {
       width: 100%; font-size: .8rem; font-weight: 300;
       color: var(--muted); text-align: center;
       margin-bottom: .75rem; min-height: 1.2rem;
     }
 
-    /* ERROR */
     .error-box {
       width: 100%; background: var(--red-light); border: 1px solid var(--red-mid);
       border-radius: 10px; padding: .85rem 1rem;
@@ -115,105 +184,98 @@
       margin-bottom: 1rem; display: none;
     }
 
-    /* RESULTS */
     .results { width: 100%; display: flex; flex-direction: column; gap: 1rem; animation: fadeUp .5s ease both; }
     .results.hidden { display: none; }
 
-@@ -218,7 +200,7 @@
+    .score-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.75rem;
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    }
+
+    .verdict-badge {
+      font-size: .72rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .25rem .75rem; border-radius: 999px; border: 1px solid;
     }
 
     .score-number { font-size: 4.5rem; font-weight: 700; letter-spacing: -.05em; line-height: 1; }
-    .score-label { font-size: .85rem; font-weight: 300; color: var(--muted); margin-top: -.5rem; }
     .score-label  { font-size: .85rem; font-weight: 300; color: var(--muted); margin-top: -.5rem; }
 
     .bar-wrap { width: 100%; background: var(--border); border-radius: 999px; height: 8px; overflow: hidden; }
     .bar-fill { height: 100%; border-radius: 999px; width: 0%; transition: width 1s cubic-bezier(0.16,1,0.3,1); }
-@@ -229,25 +211,19 @@
+    .bar-labels { display: flex; justify-content: space-between; font-size: .7rem; font-weight: 500; color: var(--faint); margin-top: .35rem; width: 100%; }
+
+    .signals-title {
+      font-size: .72rem; font-weight: 500;
       letter-spacing: .1em; text-transform: uppercase;
       color: var(--faint); margin-bottom: .1rem;
     }
-
     .signal-list { display: flex; flex-direction: column; gap: .5rem; width: 100%; }
-
     .signal {
       display: flex; align-items: flex-start; gap: .75rem;
       background: var(--card); border: 1px solid var(--border);
       border-radius: 10px; padding: .75rem 1rem;
       animation: fadeUp .4s ease both;
     }
-
     .signal-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: .35rem; }
     .signal-text { font-size: .85rem; font-weight: 300; color: var(--muted); line-height: 1.55; }
     .signal-text strong { font-weight: 600; color: var(--text); }
-
     .no-signals { font-size: .85rem; font-weight: 300; color: var(--faint); text-align: center; padding: 1rem; }
 
-    .meta-row {
-      display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; width: 100%;
-    }
     .meta-row { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; width: 100%; }
     .meta-pill {
       font-size: .72rem; font-weight: 500; color: var(--muted);
       background: var(--bg); border: 1px solid var(--border);
-@@ -265,41 +241,29 @@
+      padding: .2rem .65rem; border-radius: 999px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="page">
+    <a href="index.html" class="back"> back to portfolio</a>
 
     <div class="eyebrow">vibe checker</div>
     <h1>was this <span>AI coded?</span></h1>
-    <p class="sub">Enter a URL or paste code directly. It scans for AI patterns and spits out a score.</p>
     <p class="sub">Enter a URL or paste code. Scans HTML, CSS, and JS for AI patterns.</p>
 
-    <!-- TABS -->
     <div class="tabs">
-      <button class="tab active" id="tab-url" onclick="switchTab('url')">by URL</button>
-      <button class="tab" id="tab-paste" onclick="switchTab('paste')">paste code</button>
       <button class="tab active" id="tab-url"   onclick="switchTab('url')">by URL</button>
       <button class="tab"        id="tab-paste" onclick="switchTab('paste')">paste code</button>
     </div>
 
-    <!-- URL MODE -->
     <div id="mode-url" style="width:100%">
       <div class="input-row">
-        <input
-          type="text"
-          class="url-input"
-          id="url-input"
         <input type="text" class="url-input" id="url-input"
           placeholder="e.g. google.com or https://example.com"
-          autocomplete="off"
-          autocorrect="off"
-          spellcheck="false"
-        />
           autocomplete="off" autocorrect="off" spellcheck="false" />
       </div>
     </div>
 
-    <!-- PASTE MODE -->
     <div id="mode-paste" style="width:100%;display:none">
-      <textarea
-        class="paste-box"
-        id="code-input"
       <textarea class="paste-box" id="code-input"
         placeholder="paste your HTML, CSS, or JS here..."
-        spellcheck="false"
-      ></textarea>
         spellcheck="false"></textarea>
     </div>
 
     <div class="error-box" id="error-box"></div>
-    <div class="status" id="status"></div>
     <div class="status"    id="status"></div>
 
     <div class="btn-row">
       <button class="analyze-btn" id="analyze-btn" onclick="analyze()">
-@@ -309,19 +273,17 @@ <h1>was this <span>AI coded?</span></h1>
+        <span id="btn-text">analyze</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
       <button class="clear-btn" onclick="clearAll()">clear</button>
     </div>
 
-    <!-- RESULTS -->
     <div class="results hidden" id="results">
       <div class="score-card">
         <span class="verdict-badge" id="verdict-badge">—</span>
-        <span class="score-number" id="score-number">0%</span>
         <span class="score-number"  id="score-number">0%</span>
         <span class="score-label">AI probability</span>
         <div style="width:100%">
@@ -222,73 +284,58 @@
         </div>
         <div class="meta-row" id="meta-row"></div>
       </div>
-
       <span class="signals-title">signals found</span>
       <div class="signal-list" id="signal-list"></div>
     </div>
-@@ -339,23 +301,12 @@ <h1>was this <span>AI coded?</span></h1>
+  </div>
+
+  <script>
+    let currentTab = 'url';
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.getElementById('mode-url').style.display   = tab === 'url'   ? 'block' : 'none';
+      document.getElementById('mode-paste').style.display = tab === 'paste' ? 'block' : 'none';
+      document.getElementById('tab-url').classList.toggle('active',   tab === 'url');
+      document.getElementById('tab-paste').classList.toggle('active', tab === 'paste');
       clearAll();
     }
 
-    // enter key on URL input
-    document.getElementById('url-input').addEventListener('keydown', e => {
-      if (e.key === 'Enter') analyze();
-    });
     document.getElementById('url-input').addEventListener('keydown', e => { if (e.key === 'Enter') analyze(); });
 
     async function analyze() {
       hideError();
       document.getElementById('results').classList.add('hidden');
-
-      if (currentTab === 'url') {
-        await analyzeUrl();
-      } else {
-        const code = document.getElementById('code-input').value.trim();
-        if (!code) return;
-        const { score, signals, meta } = analyzeCode(code);
-        showResults(score, signals, meta);
-      }
       currentTab === 'url' ? await analyzeUrl() : analyzePaste();
     }
 
     async function analyzeUrl() {
-@@ -368,37 +319,33 @@ <h1>was this <span>AI coded?</span></h1>
+      let raw = document.getElementById('url-input').value.trim();
+      if (!raw) return;
+      if (!raw.startsWith('http://') && !raw.startsWith('https://')) raw = 'https://' + raw;
+
+      setLoading(true);
+      setStatus('fetching page...');
 
       let html = '';
       try {
-        const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(raw)}`;
-        const res   = await fetch(proxy);
-        if (!res.ok) throw new Error('proxy error');
-        const data  = await res.json();
-        html        = data.contents || '';
-        if (!html) throw new Error('empty response');
         const res  = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(raw)}`);
         if (!res.ok) throw new Error();
         const data = await res.json();
         html = data.contents || '';
         if (!html) throw new Error();
       } catch {
-        setLoading(false);
-        setStatus('');
         setLoading(false); setStatus('');
         showError("Couldn't fetch that URL — the site may block external requests. Try paste mode instead.");
         return;
       }
 
-      setStatus('parsing HTML, CSS & JS...');
       setStatus('pulling CSS and JS files...');
 
-      // collect all code from the HTML
       let code = html;
-      const parser = new DOMParser();
-      const doc    = parser.parseFromString(html, 'text/html');
-
-      // linked CSS & JS (up to 3 each)
       const parser  = new DOMParser();
       const doc     = parser.parseFromString(html, 'text/html');
       const baseUrl = new URL(raw);
-      const cssLinks = [...doc.querySelectorAll('link[rel="stylesheet"]')].slice(0, 3);
-      const jsLinks  = [...doc.querySelectorAll('script[src]')].slice(0, 3);
 
       const cssLinks = [...doc.querySelectorAll('link[rel="stylesheet"]')].slice(0, 5);
       const jsLinks  = [...doc.querySelectorAll('script[src]')].slice(0, 5);
@@ -298,25 +345,20 @@
           const href    = el.getAttribute('href') || el.getAttribute('src');
           if (!href || href.startsWith('//') && !href.startsWith('http')) return '';
           const fullUrl = new URL(href, baseUrl).href;
-          const proxy   = `https://api.allorigins.win/get?url=${encodeURIComponent(fullUrl)}`;
-          const res     = await fetch(proxy);
           const res     = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(fullUrl)}`);
           const data    = await res.json();
           return data.contents || '';
         } catch { return ''; }
-@@ -407,128 +354,256 @@ <h1>was this <span>AI coded?</span></h1>
+      });
+
       const extras = await Promise.all(fetches);
       extras.forEach(c => { code += '\n' + c; });
-
-      setLoading(false);
-      setStatus('');
 
       setLoading(false); setStatus('');
       const { score, signals, meta } = analyzeCode(code);
       showResults(score, signals, { ...meta, url: raw });
     }
 
-    // ── ANALYSIS ENGINE ─────────────────────────────────────────────────────
     function analyzePaste() {
       const code = document.getElementById('code-input').value.trim();
       if (!code) return;
@@ -332,45 +374,19 @@
       const total   = lines.length;
       const lower   = code.toLowerCase();
 
-      const commentLines = lines.filter(l => {
-        const t = l.trim();
-        return t.startsWith('//') || t.startsWith('*') || t.startsWith('/*') || t.startsWith('<!--');
-      }).length;
-
-      const commentRatio = commentLines / total;
-      if (commentRatio > 0.12 && total > 15) {
-        const pts = Math.min(Math.round(commentRatio * 80), 15);
-        score += pts;
-        signals.push({ text: `<strong>${Math.round(commentRatio * 100)}% of lines are comments</strong> — AI over-explains everything`, type: 'ai' });
-      }
-
-      const dividers = (code.match(/\/\*\s*[=\-─]{2,}/g) || []).length;
-      if (dividers >= 2) {
-        score += Math.min(dividers * 4, 12);
-        signals.push({ text: `<strong>${dividers} decorative comment dividers</strong> (/* ══ ... ══ */) — a very AI habit`, type: 'ai' });
-      }
       // ── CSS STRUCTURE ──────────────────────────────────────────────────────
 
       const cssVars = (code.match(/--[\w-]+\s*:/g) || []).length;
-      if (cssVars >= 4) {
-        score += Math.min(Math.round(cssVars * 1.2), 12);
-        signals.push({ text: `<strong>${cssVars} CSS custom properties</strong> — AI always builds a tidy variable system`, type: 'ai' });
       if (cssVars >= 3) {
         score += Math.min(cssVars * 1.5, 14);
         signals.push({ text: `<strong>${cssVars} CSS custom properties</strong> — AI always builds a neat variable system`, type: 'ai' });
       }
 
       if (code.includes(':root {') || code.includes(':root{')) {
-        score += 6;
-        signals.push({ text: `<strong>:root variable block</strong> — AI centralizes every value`, type: 'ai' });
         score += 7;
         signals.push({ text: `<strong>:root variable block</strong> — AI centralizes every color and size obsessively`, type: 'ai' });
       }
 
-      const aria = (code.match(/aria-[\w]+/g) || []).length;
-      if (aria >= 3) {
-        score += Math.min(aria * 2, 10);
-        signals.push({ text: `<strong>${aria} ARIA accessibility attributes</strong> — AI is always perfectly accessible`, type: 'ai' });
       const keyframes = (code.match(/@keyframes/g) || []).length;
       if (keyframes >= 3) {
         score += Math.min(keyframes * 3, 14);
@@ -384,8 +400,6 @@
       }
 
       const cb = (code.match(/cubic-bezier/g) || []).length;
-      if (cb >= 2) {
-        score += Math.min(cb * 3, 10);
       if (cb >= 1) {
         score += Math.min(cb * 4, 10);
         signals.push({ text: `<strong>${cb} cubic-bezier easing values</strong> — AI never just uses "ease"`, type: 'ai' });
@@ -398,8 +412,6 @@
       }
 
       if (code.includes('backdrop-filter')) {
-        score += 6;
-        signals.push({ text: `<strong>backdrop-filter blur</strong> — AI loves frosted glass`, type: 'ai' });
         score += 8;
         signals.push({ text: `<strong>backdrop-filter blur</strong> — AI can't resist frosted glass`, type: 'ai' });
       }
@@ -435,9 +447,6 @@
       }
 
       const clamps = (code.match(/clamp\(/g) || []).length;
-      if (clamps >= 2) {
-        score += Math.min(clamps * 3, 9);
-        signals.push({ text: `<strong>${clamps} clamp() calls</strong> for fluid sizing — AI goes full responsive`, type: 'ai' });
       if (clamps >= 1) {
         score += Math.min(clamps * 4, 10);
         signals.push({ text: `<strong>${clamps} clamp() calls</strong> for fluid typography — AI goes full responsive instantly`, type: 'ai' });
@@ -445,16 +454,10 @@
 
       const wc = (code.match(/will-change/g) || []).length;
       if (wc >= 1) {
-        score += Math.min(wc * 3, 7);
-        signals.push({ text: `<strong>will-change</strong> present — AI micro-optimizes animations`, type: 'ai' });
         score += Math.min(wc * 3, 8);
         signals.push({ text: `<strong>will-change</strong> present — AI micro-optimizes every animation`, type: 'ai' });
       }
 
-      const trans = (code.match(/transition\s*:/g) || []).length;
-      if (trans >= 4) {
-        score += Math.min(trans * 2, 10);
-        signals.push({ text: `<strong>${trans} transition properties</strong> — AI animates everything`, type: 'ai' });
       if (code.includes('backdrop-filter') || lower.includes('scroll-behavior: smooth')) {
         score += 4;
         signals.push({ text: `<strong>scroll-behavior: smooth</strong> — AI always adds buttery smooth scrolling`, type: 'ai' });
@@ -509,27 +512,17 @@
       }
 
       const varUse = (code.match(/var\(--/g) || []).length;
-      if (varUse >= 10) {
-        score += Math.min(Math.floor(varUse / 5), 8);
-        signals.push({ text: `<strong>${varUse} CSS variable references</strong> — extremely systematic`, type: 'ai' });
       if (varUse >= 12) {
         score += Math.min(Math.floor(varUse / 6), 8);
         signals.push({ text: `<strong>${varUse} CSS variable references</strong> — robotically systematic`, type: 'ai' });
       }
 
-      const obvious = (code.match(/\/\*\s*(nav|header|footer|hero|button|card|grid|section|layout|cursor|loader)\s*\*\//gi) || []).length;
-      if (obvious >= 2) {
-        score += obvious * 4;
-        signals.push({ text: `<strong>${obvious} comments that just label HTML sections</strong> — AI narrates the obvious`, type: 'ai' });
       const decorDividers = (code.match(/\/\*\s*[=\-─]{3,}/g) || []).length;
       if (decorDividers >= 2) {
         score += Math.min(decorDividers * 4, 10);
         signals.push({ text: `<strong>${decorDividers} decorative comment dividers</strong> (/* ═══ */) — AI organizes code like a textbook`, type: 'ai' });
       }
 
-      if (code.includes('box-sizing: border-box')) {
-        score += 4;
-        signals.push({ text: `<strong>box-sizing: border-box</strong> reset included — AI does this reflexively`, type: 'ai' });
       // ── HTML / TEXT PATTERNS ───────────────────────────────────────────────
 
       const cardCount = (lower.match(/class="[^"]*card[^"]*"/g) || []).length;
@@ -544,10 +537,6 @@
         signals.push({ text: `<strong>${sectionCount} semantic &lt;section&gt; tags</strong> — AI writes textbook HTML structure`, type: 'ai' });
       }
 
-      const rg = (code.match(/radial-gradient/g) || []).length;
-      if (rg >= 2) {
-        score += Math.min(rg * 2, 8);
-        signals.push({ text: `<strong>${rg} radial-gradient uses</strong> — AI loves atmospheric glows`, type: 'ai' });
       const aria = (code.match(/aria-[\w]+/g) || []).length;
       if (aria >= 3) {
         score += Math.min(aria * 2, 8);
@@ -603,34 +592,24 @@
       const imp = (code.match(/!important/g) || []).length;
       if (imp >= 2) {
         score -= Math.min(imp * 4, 14);
-        signals.push({ text: `<strong>${imp} !important uses</strong> — humans hack CSS, AI doesn't need to`, type: 'human' });
         signals.push({ text: `<strong>${imp} !important overrides</strong> — humans hack CSS, AI doesn't need to`, type: 'human' });
       }
 
-      const inline = (code.match(/style="[^"]+"/g) || []).length;
       const inline = (code.match(/style="[^"]{5,}"/g) || []).length;
       if (inline >= 3) {
         score -= Math.min(inline * 2, 10);
-        signals.push({ text: `<strong>${inline} inline style attributes</strong> — a very human habit`, type: 'human' });
-      }
-
-      if (commentLines === 0 && total > 25) {
-        score -= 14;
-        signals.push({ text: `<strong>zero comments</strong> in the code — AI always explains itself`, type: 'human' });
         signals.push({ text: `<strong>${inline} inline style attributes</strong> — a distinctly human habit`, type: 'human' });
       }
 
-      const shortClass = (code.match(/class="[\w]{1,3}"/g) || []).length;
-      if (shortClass >= 3) {
-        score -= Math.min(shortClass * 2, 8);
-        signals.push({ text: `<strong>${shortClass} very short class names</strong> — humans abbreviate, AI doesn't`, type: 'human' });
       if (commentLines === 0 && total > 30) {
         score -= 12;
         signals.push({ text: `<strong>zero comments</strong> — AI always explains itself`, type: 'human' });
       }
 
       const hasTabs   = code.includes('\t');
-@@ -538,12 +613,18 @@ <h1>was this <span>AI coded?</span></h1>
+      const hasSpaces = lines.some(l => l.startsWith('  '));
+      if (hasTabs && hasSpaces) {
+        score -= 8;
         signals.push({ text: `<strong>mixed tabs and spaces</strong> — inconsistent indentation is a human tell`, type: 'human' });
       }
 
@@ -641,39 +620,37 @@
       }
 
       score = Math.round(Math.max(0, Math.min(score, 100)));
-      const meta = { lines: total, cssVars, commentLines };
       const meta = { lines: total, cssVars, commentLines, keyframes };
       return { score, signals, meta };
     }
 
-    // ── DISPLAY ──────────────────────────────────────────────────────────────
     // ── DISPLAY ───────────────────────────────────────────────────────────────
     function getVerdict(score) {
       if (score <= 20) return { label: 'definitely human', color: 'var(--green)',  bg: 'var(--green-light)',  border: 'var(--green-mid)' };
       if (score <= 40) return { label: 'mostly human',    color: 'var(--green)',  bg: 'var(--green-light)',  border: 'var(--green-mid)' };
-@@ -553,13 +634,13 @@ <h1>was this <span>AI coded?</span></h1>
+      if (score <= 60) return { label: 'mixed signals',   color: 'var(--yellow)', bg: 'var(--yellow-light)', border: 'var(--yellow-mid)' };
+      if (score <= 80) return { label: 'probably AI',     color: 'var(--red)',    bg: 'var(--red-light)',    border: 'var(--red-mid)' };
+      return                  { label: 'pure vibe code',  color: 'var(--red)',    bg: 'var(--red-light)',    border: 'var(--red-mid)' };
     }
 
     function showResults(score, signals, meta = {}) {
-      const results = document.getElementById('results');
       const results  = document.getElementById('results');
       results.classList.remove('hidden');
-      const verdict = getVerdict(score);
       const verdict  = getVerdict(score);
 
       const badge = document.getElementById('verdict-badge');
-      badge.textContent     = verdict.label;
-      badge.style.color     = verdict.color;
       badge.textContent      = verdict.label;
       badge.style.color      = verdict.color;
       badge.style.background = verdict.bg;
       badge.style.borderColor = verdict.border;
 
-@@ -570,11 +651,11 @@ <h1>was this <span>AI coded?</span></h1>
+      document.getElementById('score-number').textContent = score + '%';
+      document.getElementById('score-number').style.color = verdict.color;
+
+      const bar = document.getElementById('bar-fill');
       bar.style.background = verdict.color;
       setTimeout(() => { bar.style.width = score + '%'; }, 50);
 
-      // meta pills
       const metaRow = document.getElementById('meta-row');
       metaRow.innerHTML = '';
       if (meta.lines)       metaRow.innerHTML += `<span class="meta-pill">${meta.lines.toLocaleString()} lines scanned</span>`;
@@ -682,32 +659,42 @@
       if (meta.commentLines)metaRow.innerHTML += `<span class="meta-pill">${meta.commentLines} comment lines</span>`;
 
       const list = document.getElementById('signal-list');
-@@ -602,22 +683,16 @@ <h1>was this <span>AI coded?</span></h1>
+      list.innerHTML = '';
+
+      if (!signals.length) {
+        list.innerHTML = '<p class="no-signals">No strong signals — inconclusive.</p>';
+      } else {
+        signals.forEach((s, i) => {
+          const el = document.createElement('div');
+          el.className = 'signal';
+          el.style.animationDelay = (i * 55) + 'ms';
+          const dotColor = s.type === 'ai' ? verdict.color : 'var(--green)';
+          el.innerHTML = `<div class="signal-dot" style="background:${dotColor}"></div><span class="signal-text">${s.text}</span>`;
+          list.appendChild(el);
+        });
+      }
+
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function setLoading(on) {
+      document.getElementById('analyze-btn').disabled  = on;
+      document.getElementById('spinner').style.display = on ? 'block' : 'none';
       document.getElementById('btn-text').textContent  = on ? 'analyzing...' : 'analyze';
     }
 
-    function setStatus(msg) { document.getElementById('status').textContent = msg; }
-
-    function showError(msg) {
-      const el = document.getElementById('error-box');
-      el.textContent = msg;
-      el.style.display = 'block';
-    }
-
-    function hideError() { document.getElementById('error-box').style.display = 'none'; }
     function setStatus(msg)  { document.getElementById('status').textContent = msg; }
     function showError(msg)  { const e = document.getElementById('error-box'); e.textContent = msg; e.style.display = 'block'; }
     function hideError()     { document.getElementById('error-box').style.display = 'none'; }
 
     function clearAll() {
-      document.getElementById('url-input').value = '';
-      document.getElementById('code-input').value = '';
       document.getElementById('url-input').value   = '';
       document.getElementById('code-input').value  = '';
       document.getElementById('results').classList.add('hidden');
       document.getElementById('bar-fill').style.width = '0%';
-      document.getElementById('status').textContent = '';
       document.getElementById('status').textContent   = '';
       hideError();
     }
   </script>
+</body>
+</html>
