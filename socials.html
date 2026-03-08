@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>olvrleb — socials</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" />
+  <script src="shared.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:       #2563EB;
+      --blue-glow:  rgba(37,99,235,.18);
+      --blue-light: #EFF6FF;
+      --blue-mid:   #BFDBFE;
+      --blue-dark:  #1D4ED8;
+      --bg:         #FAFAFA;
+      --card:       #FFFFFF;
+      --text:       #0D1117;
+      --muted:      #6B7280;
+      --faint:      #9CA3AF;
+      --border:     #E5E7EB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Geist Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,.055) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none; z-index: 0;
+    }
+
+    .blob { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(70px); z-index: 0; }
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(37,99,235,.09) 0%, transparent 70%);
+      top: -150px; left: -150px;
+      animation: blob1 9s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(99,102,241,.08) 0%, transparent 70%);
+      bottom: -80px; right: -80px;
+      animation: blob2 11s ease-in-out infinite alternate;
+    }
+    @keyframes blob1 { from { transform: scale(1); } to { transform: translate(60px,50px) scale(1.1); } }
+    @keyframes blob2 { from { transform: scale(1); } to { transform: translate(-50px,-40px) scale(1.12); } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .page {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2.5rem 1.5rem 4rem;
+      width: 100%; max-width: 420px;
+      animation: fadeUp .6s .1s ease both;
+    }
+
+    .back {
+      align-self: flex-start;
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-size: .8rem; font-weight: 500; color: var(--faint);
+      text-decoration: none; margin-bottom: 2.5rem; transition: color .15s;
+    }
+    .back:hover { color: var(--blue); }
+    .back::before { content: '←'; font-size: .85rem; }
+
+    .avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--blue-light); border: 2px solid var(--blue-mid);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.5rem; font-weight: 700; color: var(--blue);
+      letter-spacing: -.03em;
+    }
+
+    h1 {
+      font-size: 1.6rem; font-weight: 700;
+      letter-spacing: -.04em; margin-bottom: .35rem;
+    }
+
+    .tagline {
+      font-size: .88rem; font-weight: 300; color: var(--muted);
+      margin-bottom: 2.25rem; text-align: center; line-height: 1.5;
+    }
+
+    .socials { display: flex; flex-direction: column; gap: .75rem; width: 100%; }
+
+    .social-card {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1rem 1.2rem; text-decoration: none; color: var(--text);
+      transition: border-color .2s, box-shadow .2s, transform .2s, background .2s;
+      animation: fadeUp .5s ease both;
+    }
+    .social-card:nth-child(1) { animation-delay: .15s; }
+    .social-card:nth-child(2) { animation-delay: .22s; }
+    .social-card:nth-child(3) { animation-delay: .29s; }
+    .social-card:nth-child(4) { animation-delay: .36s; }
+    .social-card:nth-child(5) { animation-delay: .43s; }
+
+    .social-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px var(--accent, var(--blue)), 0 8px 24px rgba(0,0,0,.07);
+      border-color: var(--accent, var(--blue));
+    }
+    .social-card:hover .social-arrow { color: var(--accent, var(--blue)); transform: translate(2px,-2px); }
+    .social-card:hover .social-icon-wrap { background: var(--accent-light, var(--blue-light)); border-color: var(--accent-mid, var(--blue-mid)); }
+    .social-card:hover .social-icon-wrap svg { color: var(--accent, var(--blue)); }
+
+    .social-left { display: flex; align-items: center; gap: .9rem; }
+
+    .social-icon-wrap {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background .2s, border-color .2s;
+    }
+    .social-icon-wrap svg { width: 18px; height: 18px; color: var(--faint); transition: color .2s; }
+
+    /* custom SVG icons for platforms without Lucide icons */
+    .social-icon-wrap .custom-svg {
+      width: 18px; height: 18px; fill: var(--faint); transition: fill .2s;
+    }
+    .social-card:hover .social-icon-wrap .custom-svg { fill: var(--accent, var(--blue)); }
+
+    .social-info { display: flex; flex-direction: column; gap: .12rem; }
+
+    .social-platform {
+      font-size: .88rem; font-weight: 600; color: var(--text); letter-spacing: -.01em;
+    }
+
+    .social-handle {
+      font-size: .78rem; font-weight: 300; color: var(--faint);
+    }
+
+    .social-arrow {
+      color: var(--faint); transition: color .2s, transform .2s; flex-shrink: 0;
+    }
+    .social-arrow svg { width: 17px; height: 17px; display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="page">
+    <a href="index.html" class="back"> back to portfolio</a>
+
+    <div class="avatar">o</div>
+    <h1>olvrleb</h1>
+    <p class="tagline">bay area, ca — developer</p>
+
+    <div class="socials">
+
+      <!-- GitHub -->
+      <a href="https://github.com/olvrleb" target="_blank" class="social-card"
+         style="--accent:#24292F; --accent-light:#F6F8FA; --accent-mid:#D0D7DE;">
+        <div class="social-left">
+          <div class="social-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+          </div>
+          <div class="social-info">
+            <span class="social-platform">GitHub</span>
+            <span class="social-handle">@olvrleb</span>
+          </div>
+        </div>
+        <span class="social-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </span>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://instagram.com/olvrlbnc" target="_blank" class="social-card"
+         style="--accent:#E1306C; --accent-light:#FFF0F5; --accent-mid:#FFC0D0;">
+        <div class="social-left">
+          <div class="social-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </div>
+          <div class="social-info">
+            <span class="social-platform">Instagram</span>
+            <span class="social-handle">@olvrlbnc</span>
+          </div>
+        </div>
+        <span class="social-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </span>
+      </a>
+
+      <!-- Minecraft / NameMC -->
+      <a href="https://namemc.com/profile/olvrleb" target="_blank" class="social-card"
+         style="--accent:#4CAF50; --accent-light:#F1FBF1; --accent-mid:#A5D6A7;">
+        <div class="social-left">
+          <div class="social-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </div>
+          <div class="social-info">
+            <span class="social-platform">Minecraft</span>
+            <span class="social-handle">olvrleb · namemc</span>
+          </div>
+        </div>
+        <span class="social-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </span>
+      </a>
+
+      <!-- YouTube -->
+      <a href="https://youtube.com/@olvrl3b" target="_blank" class="social-card"
+         style="--accent:#FF0000; --accent-light:#FFF5F5; --accent-mid:#FFCDD2;">
+        <div class="social-left">
+          <div class="social-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+              <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+            </svg>
+          </div>
+          <div class="social-info">
+            <span class="social-platform">YouTube</span>
+            <span class="social-handle">@olvrl3b</span>
+          </div>
+        </div>
+        <span class="social-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </span>
+      </a>
+
+      <!-- TikTok -->
+      <a href="https://tiktok.com/@olvrxleb" target="_blank" class="social-card"
+         style="--accent:#010101; --accent-light:#F5F5F5; --accent-mid:#E0E0E0;">
+        <div class="social-left">
+          <div class="social-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="custom-svg">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+            </svg>
+          </div>
+          <div class="social-info">
+            <span class="social-platform">TikTok</span>
+            <span class="social-handle">@olvrxleb</span>
+          </div>
+        </div>
+        <span class="social-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </span>
+      </a>
+
+    </div>
+  </div>
+
+</body>
+</html>
