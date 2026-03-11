@@ -3,7 +3,7 @@
 Personal portfolio site. Hand-coded with vanilla HTML, CSS, and JavaScript.
 No frameworks. No build tools. No nonsense.
 
-Live at: **[olvrweb.github.io](https://olvrweb.github.io)**
+Live at: **[olvrleb.com](https://olvrleb.com)**
 
 ---
 
