@@ -21,12 +21,12 @@ const projects = [
   live: "checker.html",
   },
   {
-    name: "Todo CLI",
-    description: "A command-line todo manager in Python. Supports priorities, deadlines, and JSON-based persistence.",
-    tags: ["Python", "CLI"],
-    github: "https://github.com/olvrleb/todo-cli",
-    live: "",
+  name: "Unfollow Checker",
+  description: "Paste your Instagram following and followers lists to instantly see who doesn't follow you back, with mutual follow detection, search, and one-click copy. Runs 100% in-browser.",
+  tags: ["JavaScript", "HTML", "CSS"],
+  live: "unfollow.html",
   },
+
   {
     name: "Portfolio",
     description: "This site. Hand-coded with vanilla HTML, CSS, and JS. No frameworks, no build tools, no nonsense.",
